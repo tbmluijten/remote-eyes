@@ -6,3 +6,8 @@ To build this crap you need some libs:
 - X11
 
 then just type "make"
+
+Usage:
+
+press f to go fullscreen
+press ESC to quit
