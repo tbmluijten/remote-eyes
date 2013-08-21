@@ -1,13 +1,15 @@
 To build this crap you need some libs:
-- GLU
 - GL
 - OpenCV
-- GLEW
 - X11
+- Xinerama
+- udev
+- ovr (included)
+- pthread
 
-then just type "make"
+then go into the fpv directory and just type "make"
 
 Usage:
 
-press f to go fullscreen
-press ESC to quit
+press f9 to go fullscreen
+press pos1/home or end to change camera picturesize inside Rift
