@@ -52,7 +52,7 @@ public:
 
 
 	// FPV functions
-	virtual IplImage * GrabFrame();
+	virtual void GrabFrame();
 
 
     void         Render(const StereoEyeParams& stereo);
@@ -645,32 +645,27 @@ static void DrawTextBox(RenderDevice* prender, float x, float y,
     prender->RenderText(&DejaVu, text, x, y, textSize, Color(255,255,0,210));
 }
 
-IplImage* OculusWorldDemoApp::GrabFrame() {
-	IplImage * frame; 
-
+void OculusWorldDemoApp::GrabFrame() {
 	// if not capturing init the capture!
 	if(!capture) {
 		capture = cvCaptureFromCAM( CV_CAP_ANY );
 		if ( !capture ) {
 		     fprintf( stderr, "ERROR: capture is NULL \n" );
 		     getchar();
-		     return NULL;
 		}
 	}
 
-	frame = cvQueryFrame( capture );
+	lastFrame = cvQueryFrame( capture );
 
-	if ( !frame ) {
+	if ( !lastFrame ) {
 		fprintf( stderr, "ERROR: frame is null...\n" );
 	}
-
-	return frame;
 }
 
 void OculusWorldDemoApp::Render(const StereoEyeParams& stereo)
 {
 	if(stereo.Eye == StereoEye_Left) {
-		lastFrame = GrabFrame();
+		GrabFrame();
 	}
     pRender->BeginScene(PostProcess);
 
@@ -717,6 +712,9 @@ void OculusWorldDemoApp::Render(const StereoEyeParams& stereo)
     ShaderFill* image = (ShaderFill*)pRender->CreateTextureFill(tex, false);
     pRender->RenderImage(-pictureSize, -pictureSize, pictureSize, pictureSize, image, 255);
 
+	delete image;
+	delete tex;
+	free(imageData);
 
     if(!AdjustMessage.IsEmpty() && AdjustMessageTimeout > pPlatform->GetAppTime())
     {
