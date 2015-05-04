@@ -1,0 +1,1 @@
+This just grabs Video from a capture interface and outputs in a way suitable for the rift.
